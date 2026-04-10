@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رفيق - عالمك السينمائي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --accent-white: #ffffff;
+            --gray-text: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--accent-white);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* أنيميشن الخلفية (النقاط البيضاء) */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* شاشة التحميل الاستهلالية */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: 1s ease-in-out;
+        }
+
+        .loader-text {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.95); } }
+
+        /* الحاوية الرئيسية */
+        .main-container {
+            height: 100vh;
+            transition: transform 0.9s cubic-bezier(0.6, 0, 0.2, 1);
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 15%;
+            position: relative;
+        }
+
+        h1 { font-size: 5rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        p { font-size: 1.4rem; color: var(--gray-text); line-height: 1.7; max-width: 800px; }
+
+        /* زر التحميل في السكشن الأول */
+        .hero-download {
+            margin-top: 40px;
+            padding: 20px 50px;
+            background: var(--accent-white);
+            color: black;
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.4s;
+            animation: slideUp 1s ease;
+        }
+
+        .hero-download:hover {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+
+        /* السكشن الثاني: المكتبة */
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* ايموجيات أبيض وأسود */
+        .icon { font-size: 3rem; margin-bottom: 15px; filter: grayscale(100%) brightness(200%); }
+
+        /* النقاط الجانبية */
+        .side-dots {
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            margin: 25px 0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active { background: #fff; transform: scale(2); box-shadow: 0 0 10px #fff; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <div id="loader">
+        <div class="loader-text">رَفِيق</div>
+    </div>
+
+    <div class="side-dots">
+        <div class="dot active" onclick="jump(0)"></div>
+        <div class="dot" onclick="jump(1)"></div>
+        <div class="dot" onclick="jump(2)"></div>
+        <div class="dot" onclick="jump(3)"></div>
+    </div>
+
+    <div class="main-container" id="wrapper">
+        <section>
+            <div class="icon">🖥️</div>
+            <h1>رَفِيق</h1>
+            <p>مشاهدة الأفلام والمسلسلات لم تكن بهذه السهولة من قبل.</p>
+            <a href="https://download948.mediafire.com/kfkynjjpfb2gOHXdzgano-PQuA2Ykcc3IFVEGLlTThLFYeED2o2fKzSUpSwdbzcxfuxgUjwQHLmd0L3105L2cCWIZ2bIXL6_J5ingJ-MC7GXPSOF-pcifMtGU7gebFZgqoBFlaXsHuDoqrcJXoTE_txUjC-t0LORz6NEhUjcc5Zm/lvohct57ublecqm/Rafiq+Setup+1.0.0.rar" class="hero-download">
+                لتحميل رفيق اضغط هنا
+            </a>
+        </section>
+
+        <section>
+            <div class="feature-card">
+                <div class="icon">🎬</div>
+                <h2>مكتبة متواضعة بطموح كبير</h2>
+                <p>نحن في البداية، لكننا نسعى لتوفير جودات عالية (4K) وروابط بث متعددة. <br> هدفنا الأساسي: تجربة مجانية بالكامل وبدون إعلانات مزعجة.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="icon">📱</div>
+            <h2>رفيق في جيبك قريباً</h2>
+            <p>نعمل حالياً على تطوير نسخة الهاتف المحمول. ترقبوا الإطلاق الرسمي قريباً على أندرويد و iOS.</p>
+        </section>
+
+        <section>
+            <div class="icon">🔍</div>
+            <h2>تصفح ذكي وقوائم سهلة</h2>
+            <p>برنامج رفيق مصمم ليكون رفيقك الحقيقي في السهرات، بواجهة مستخدم بسيطة وجميلة تناسب الجميع.</p>
+            <p style="margin-top: 20px; font-size: 1rem;">جميع الحقوق محفوظة - رفيق 2026</p>
+        </section>
+    </div>
+
+    <script>
+        // إخفاء اللودر
+        window.onload = () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 1000);
+            }, 2000);
+        };
+
+        // أنيميشن النقاط في الخلفية
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+
+        // نظام السكرول السلس
+        let currentPos = 0;
+        const wrapper = document.getElementById('wrapper');
+        const dots = document.querySelectorAll('.dot');
+        let isMoving = false;
+
+        function jump(index) {
+            currentPos = index;
+            wrapper.style.transform = `translateY(-${index * 100}vh)`;
+            dots.forEach(d => d.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        window.addEventListener('wheel', (e) => {
+            if (isMoving) return;
+            isMoving = true;
+            if (e.deltaY > 0 && currentPos < 3) currentPos++;
+            else if (e.deltaY < 0 && currentPos > 0) currentPos--;
+            jump(currentPos);
+            setTimeout(() => isMoving = false, 1000);
+        });
+    </script>
+</body>
+</html>
